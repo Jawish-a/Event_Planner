@@ -54,6 +54,7 @@ class Event(models.Model):
     seats = models.PositiveIntegerField()
     location = models.CharField(max_length=191, default="Virtual")
     category = models.ManyToManyField(Category, related_name='events', related_query_name='categories')
+    organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events', related_query_name='organizer')
     def __str__(self):
         return self.name
 

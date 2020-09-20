@@ -56,7 +56,10 @@ def homepage(request):
     return render(request, 'basics/homepage.html')
 
 def dashboard(request):
-
+    events = Event.objects.filter()
+    context = {
+        'events': events
+    }
     return render(request, 'basics/dashboard.html')
 
 def not_found(request):
