@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 
-from .forms import SignupForm, SigninForm
+from .forms import SignupForm, SigninForm, EventForm
+
+from .models import Event
 
 #####################################################################
 #       auth views                                                  #
@@ -21,7 +23,7 @@ def signup(request):
     context = {
         "form":form,
     }
-    return render(request, 'signup.html', context)
+    return render(request, 'auth/signup.html', context)
 
 def signin(request):
     form = SigninForm()
@@ -39,7 +41,7 @@ def signin(request):
     context = {
         "form":form
     }
-    return render(request, 'signin.html', context)
+    return render(request, 'auth/signin.html', context)
 
 def signout(request):
     logout(request)
@@ -54,6 +56,7 @@ def homepage(request):
     return render(request, 'basics/homepage.html')
 
 def dashboard(request):
+
     return render(request, 'basics/dashboard.html')
 
 def not_found(request):
@@ -69,3 +72,25 @@ def profile(request):
 #####################################################################
 #       event views                                                 #
 #####################################################################
+
+def event_list(request):
+    events = Event.objects.all()
+    context = {
+        "events": events,
+    }
+    return render(request, 'event/event_list.html', context)
+
+
+def event_create(request):    
+    form = EventForm()
+    if request.method == "POST":
+        form = EventForm(request.POST)
+        if form.is_valid:
+            event_obj = form.save(commit=False)
+            # event_obj.manager = request.user
+            event_obj.save()
+            return redirect('event/event_list.html', event_obj.id)
+    context = {
+        "form": form,
+    }
+    return render(request, 'event/event_create.html', context)

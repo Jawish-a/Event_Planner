@@ -1,0 +1,60 @@
+{% extends 'layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Profile</h1>
+    <div class="row">
+        <div class="col-md-3">
+            name
+        </div>
+        <div class="col-md-9">
+            {{ user.username }}
+        </div>
+        <div class="col-md-3">
+            first name
+        </div>
+        <div class="col-md-9">
+            {{ user.first_name }}
+        </div>
+        <div class="col-md-3">
+            last name
+        </div>
+        <div class="col-md-9">
+            {{ user.last_name }}
+        </div>
+        <div class="col-md-3">
+            email
+        </div>
+        <div class="col-md-9">
+            {{ user.email }}
+        </div>
+        <div class="col-md-3">
+            bio
+        </div>
+        <div class="col-md-9">
+            {{ user.bio }}
+        </div>
+        <div class="col-md-3">
+            image
+        </div>
+        <div class="col-md-9">
+            {{ user.image }}
+        </div>
+        <div class="col-md-3">
+            location
+        </div>
+        <div class="col-md-9">
+            {{ user.location }}
+        </div>
+        <div class="col-md-3">
+            birth_date
+        </div>
+        <div class="col-md-9">
+            {{ user.birth_date }}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
