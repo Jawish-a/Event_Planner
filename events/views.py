@@ -119,6 +119,13 @@ def user_edit(request):
     }
     return render(request,'basics/user_edit.html', context)
 
+def organizer(request, organizer_id):
+    user_obj = User.objects.get(id=organizer_id)
+    context = {
+        'user': user_obj
+    }
+    return render(request, 'basics/profile.html', context)
+
 
 #####################################################################
 #       event views                                                 #
@@ -126,6 +133,14 @@ def user_edit(request):
 
 def event_list(request):
     events = Event.objects.all()
+    query = request.GET.get('search')
+    if query:
+        events = events.filter(end_date__gt = datetime.now())
+        events = events.filter(
+            Q(name__icontains=query)|
+            Q(description__icontains=query)|
+            Q(organizer__username__icontains=query)
+        ).distinct()
     context = {
         "events": events,
     }
@@ -137,7 +152,7 @@ def event_create(request):
         form = EventForm(request.POST)
         if form.is_valid():
             event_obj = form.save(commit=False)
-            # event_obj.manager = request.user
+            event_obj.organizer = request.user
             event_obj.save()
             return redirect('event-list')
     context = {

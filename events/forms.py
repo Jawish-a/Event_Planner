@@ -40,7 +40,7 @@ class UserForm(forms.ModelForm):
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = '__all__'
+        exclude = ['organizer']
         
         widgets = {
         	'start_date': forms.DateInput(attrs={'type':'date'}),

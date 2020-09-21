@@ -13,7 +13,7 @@
     <p>{{ event.seats }}</p>
     <p>{{ event.location }}</p>
     <p>{{ event.category }}</p>
-    <p>{{ event.organizer }} <a href="{% url 'organizer' event.organizer.id %}">view profile</a></p>
+    <p>{{ event.organizer }} ----- <a href="{% url 'organizer' event.organizer.id %}">view profile</a> </p>
 </div>
 <div class="row">
     <a href="{% url 'event-book' event_id=event.id %}" class="btn btn-primary"> Book ticket </a>

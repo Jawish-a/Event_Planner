@@ -3,7 +3,7 @@ from .views import (
     homepage, signin, signup, signout, dashboard,
     profile, profile_edit, user_edit, not_found,
     event_create, event_list, event_detail, event_edit,
-    event_book
+    event_book, organizer
     )
 
 urlpatterns = [
@@ -16,6 +16,7 @@ urlpatterns = [
     path('signout/', signout, name='signout'),
 
 	path('profile/', profile, name='profile'),
+	path('organizer/<int:organizer_id>', organizer, name='organizer'),
 	path('profile/edit', profile_edit, name='profile-edit'),
 	path('user/edit', user_edit, name='user-edit'),
     
