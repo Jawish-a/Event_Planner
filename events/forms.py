@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from .models import Event
+from .models import Event, Profile
 
 #####################################################################
 #       auth forms                                                  #
@@ -19,6 +19,18 @@ class SignupForm(forms.ModelForm):
 class SigninForm(forms.Form):
     username = forms.CharField(required=True)
     password = forms.CharField(required=True, widget=forms.PasswordInput())
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['image', 'bio', 'location', 'birthdate']
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email','password', ]
 
 
 #####################################################################

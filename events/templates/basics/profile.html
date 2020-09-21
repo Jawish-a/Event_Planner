@@ -34,27 +34,34 @@
             bio
         </div>
         <div class="col-md-9">
-            {{ user.bio }}
+            {{ user.profile.bio }}
         </div>
         <div class="col-md-3">
             image
         </div>
         <div class="col-md-9">
-            {{ user.image }}
+            <img src="{{ user.profile.image.url }}" alt="">
         </div>
         <div class="col-md-3">
             location
         </div>
         <div class="col-md-9">
-            {{ user.location }}
+            {{ user.profile.location }}
         </div>
         <div class="col-md-3">
             birth_date
         </div>
         <div class="col-md-9">
-            {{ user.birth_date }}
+            {{ user.profile.birth_date }}
         </div>
     </div>
+    <div class="row">
+        <a href="{% url 'profile-edit' %}" class="btn btn-primary">edit profile</a>
+    </div>
+    <div class="row">
+        <a href="{% url 'user-edit' %}" class="btn btn-primary">edit personal information</a>
+    </div>
+
 </div>
 
 {% endblock content %}

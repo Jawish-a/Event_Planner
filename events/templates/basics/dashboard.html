@@ -10,6 +10,15 @@
 <div class="container d-flex">
     <a class="btn btn-primary" href="{% url 'event-create' %}">create event</a>
 </div>
+<br>
+<div class="container">
+    {% for event in events %}
+    <a href="{% url 'event-detail' event_id=event.id %}">{{ event }}</a>
+    <p></p>
+
+    {% endfor %}
+</div>
+
 
 
 {% endblock content %}
