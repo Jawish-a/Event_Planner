@@ -62,6 +62,24 @@
         <a href="{% url 'user-edit' %}" class="btn btn-primary">edit personal information</a>
     </div>
 
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <div class="row">Tickets</div>
+    <div class="row">
+        {% for ticket in user.tickets.all %}
+        <p>{{ticket.event}} | {{ticket.tickets}}</p>
+        {% endfor %}
+        <p></p>
+    </div>
+    
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
 </div>
 
 {% endblock content %}

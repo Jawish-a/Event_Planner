@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from datetime import datetime
+from django.db.models import Q
 
-from .forms import SignupForm, SigninForm, EventForm, ProfileForm, UserForm, BookEventForm
-
+from .forms import SignupForm, SigninForm, EventForm, ProfileForm, UserForm, BookEventForm, TicketForm
 from .models import Event, Category
 #####################################################################
 #       auth views                                                  #
@@ -135,11 +135,11 @@ def event_create(request):
     form = EventForm()
     if request.method == "POST":
         form = EventForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             event_obj = form.save(commit=False)
             # event_obj.manager = request.user
             event_obj.save()
-            return redirect('event/event_list.html', event_obj.id)
+            return redirect('event-list')
     context = {
         "form": form,
     }
@@ -163,22 +163,45 @@ def event_edit(request, event_id):
 
 def event_book(request, event_id):
     event_obj = Event.objects.get(id=event_id)
-    form = BookEventForm()
+    # if event_obj.seats == 0 
+    form = TicketForm()
     if request.method == "POST":
-        form = BookEventForm(request.POST)
-        if form.is_valid:
-            # print('*'*50)
-            # print(form.data['seats'])
-            # print('*'*50)
-            # 
-            # cleaned data does not work so i used data instead, will ask supervisor for help but maybe later
-            # 
-            event_obj.seats -= int(form.data['seats'])
+        form = TicketForm(request.POST)
+        if form.is_valid():
+
+            num_of_seats_to_book = int(form.cleaned_data['tickets'])
+            # validates the num_of_seats_to_book if less than 0
+            if seats_available_validate(event_obj, num_of_seats_to_book):
+                # should give a message that the number of seats not available
+                return redirect('dashboard')
+
+            ticket = form.save(commit=False)
+            # decrease the number of tickets in the event
+            event_obj.seats -= num_of_seats_to_book
             event_obj.save()
-            return redirect('event/event_list.html', event_obj.id)
+            # saves the ticket
+            ticket.event = event_obj
+            ticket.user = request.user
+            ticket.save()
+            # should redirect to the ticket page to print or save as pdf
+            return redirect('event-detail', event_obj.id)
 
     context = {
         'form': form,
         'event': event_obj,
     }
     return render(request, 'event/event_book.html', context)
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#       event validators                                            #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+def seats_available_validate(event, seats=0):
+    if seats == 0:
+        print("-"*50)
+        print(event.seats <= 0)
+        print("-"*50)
+        return event.seats <= 0
+    print("X"*50)
+    print((seats - event.seats) < 0)
+    print("X"*50)
+    return (seats - event.seats) > 0

@@ -4,6 +4,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from django.utils.timezone import timedelta, timezone
+import uuid
 
 #########################################################################
 #       user model                                                      #
@@ -64,4 +65,20 @@ def get_duration(instance, *args, **kwargs):
     if instance.end_date > instance.start_date:
         instance.duration = f"{(instance.end_date - instance.start_date).days} Days"
     instance.duration = f"All Day"
+
+
+#########################################################################
+#       ticket model                                                    #
+#########################################################################
+
+class Ticket(models.Model):
+    number = models.UUIDField(default=uuid.uuid4, editable=False)
+    tickets = models.PositiveSmallIntegerField()
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=False, auto_now_add=False, null=True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='tickets', related_query_name='event')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tickets', related_query_name='user')
+    def __str__(self):
+        return f"{self.event.name} | {self.user.first_name} {self.user.last_name}"
+
 

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from .models import Event, Profile
+from .models import Event, Profile, Ticket
 
 #####################################################################
 #       auth forms                                                  #
@@ -50,3 +50,7 @@ class EventForm(forms.ModelForm):
 class BookEventForm(forms.Form):
     seats = forms.IntegerField(required=True, max_value=10, min_value=1)
 
+class TicketForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['tickets']
