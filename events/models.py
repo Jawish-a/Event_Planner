@@ -82,3 +82,18 @@ class Ticket(models.Model):
         return f"{self.event.name} | {self.user.first_name} {self.user.last_name}"
 
 
+#########################################################################
+#       follow model                                                    #
+#########################################################################
+
+class Follower(models.Model):
+    follower = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)
+    following = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        unique_together = ('follower', 'following')
+
+    # def __str__(self):
+    #     return u'%s follows %s' % (self.follower, self.following)
+    # def __str__(self):
+    #     return self.following.username

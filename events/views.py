@@ -5,7 +5,7 @@ from datetime import datetime
 from django.db.models import Q
 
 from .forms import SignupForm, SigninForm, EventForm, ProfileForm, UserForm, BookEventForm, TicketForm
-from .models import Event, Category
+from .models import Event, Category, Follower
 #####################################################################
 #       auth views                                                  #
 #####################################################################
@@ -120,12 +120,20 @@ def user_edit(request):
     return render(request,'basics/user_edit.html', context)
 
 def organizer(request, organizer_id):
-    user_obj = User.objects.get(id=organizer_id)
+    organizer_obj = User.objects.get(id=organizer_id)
+    # this solution is dumb and needs to be fixed
+    is_follower = False
+    lst = []
+    for i in organizer_obj.followers.all():
+        lst.append(i.follower)
+    if request.user in lst:
+        is_follower = True
+    # end of the stupid solution i wrote and came up with
     context = {
-        'user': user_obj
+        'organizer': organizer_obj,
+        'is_follower': is_follower,
     }
     return render(request, 'basics/profile.html', context)
-
 
 #####################################################################
 #       event views                                                 #
@@ -220,3 +228,18 @@ def seats_available_validate(event, seats=0):
     print((seats - event.seats) < 0)
     print("X"*50)
     return (seats - event.seats) > 0
+
+
+#####################################################################
+#       following views                                             #
+#####################################################################
+
+def follow(request, organizer_id):
+    organizer = User.objects.get(id=organizer_id)
+    Follower.objects.create(follower=request.user, following=organizer)
+    return redirect('homepage')
+
+def unfollow(request, organizer_id):
+    organizer = User.objects.get(id=organizer_id)
+    Follower.objects.get(follower=request.user, following=organizer).delete()
+    return redirect('homepage')

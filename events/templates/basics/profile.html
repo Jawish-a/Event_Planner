@@ -10,51 +10,65 @@
             name
         </div>
         <div class="col-md-9">
-            {{ user.username }}
+            {{ organizer.organizername }}
         </div>
         <div class="col-md-3">
             first name
         </div>
         <div class="col-md-9">
-            {{ user.first_name }}
+            {{ organizer.first_name }}
         </div>
         <div class="col-md-3">
             last name
         </div>
         <div class="col-md-9">
-            {{ user.last_name }}
+            {{ organizer.last_name }}
         </div>
         <div class="col-md-3">
             email
         </div>
         <div class="col-md-9">
-            {{ user.email }}
+            {{ organizer.email }}
         </div>
         <div class="col-md-3">
             bio
         </div>
         <div class="col-md-9">
-            {{ user.profile.bio }}
+            {{ organizer.profile.bio }}
         </div>
         <div class="col-md-3">
             image
         </div>
         <div class="col-md-9">
-            <img src="{{ user.profile.image.url }}" alt="">
+            <img src="{{ organizer.profile.image.url }}" alt="">
         </div>
         <div class="col-md-3">
             location
         </div>
         <div class="col-md-9">
-            {{ user.profile.location }}
+            {{ organizer.profile.location }}
         </div>
         <div class="col-md-3">
             birth_date
         </div>
         <div class="col-md-9">
-            {{ user.profile.birth_date }}
+            {{ organizer.profile.birth_date }}
         </div>
     </div>
+
+    <div class="row py-5">
+        <br>
+        <div class="col-md-6">
+            {{is_follower}}
+            
+
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'follow' organizer.id %}" class="btn btn-primary">follow</a>
+            <a href="{% url 'unfollow' organizer.id %}" class="btn btn-danger">unfollow</a>
+        </div>
+    </div>
+
     <div class="row">
         <a href="{% url 'profile-edit' %}" class="btn btn-primary">edit profile</a>
     </div>
@@ -69,12 +83,12 @@
     <hr>
     <div class="row">Tickets</div>
     <div class="row">
-        {% for ticket in user.tickets.all %}
+        {% for ticket in organizer.tickets.all %}
         <p>{{ticket.event}} | {{ticket.tickets}}</p>
         {% endfor %}
         <p></p>
     </div>
-    
+
     <hr>
     <hr>
     <hr>
