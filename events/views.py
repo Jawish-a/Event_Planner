@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
+from datetime import datetime
 
-from .forms import SignupForm, SigninForm, EventForm, ProfileForm, UserForm
+from .forms import SignupForm, SigninForm, EventForm, ProfileForm, UserForm, BookEventForm
 
-from .models import Event
-
+from .models import Event, Category
 #####################################################################
 #       auth views                                                  #
 #####################################################################
@@ -37,7 +37,13 @@ def signin(request):
             auth_user = authenticate(username=username, password=password)
             if auth_user is not None:
                 login(request, auth_user)
-                return redirect('dashboard')
+                # if the user has event then he is an organizer 
+                # if not he is a guest and redirect to homepage
+                # to see upcommin events
+                if request.user.events == None:
+                    return redirect('dashboard')
+                return redirect('homepage')
+
     context = {
         "form":form
     }
@@ -53,7 +59,18 @@ def signout(request):
 #####################################################################
 
 def homepage(request):
-    return render(request, 'basics/homepage.html')
+    categories = Category.objects.all()
+    # events = Event.objects.all(start_date__gte = datetime.now() )
+    current_events = Event.objects.filter(start_date__lte = datetime.now() , end_date__gte = datetime.now() )
+    upcomming_events = Event.objects.filter(start_date__gte = datetime.now() )
+    context = {
+        'categories':categories,
+        # 'events':events,
+        'current_events':current_events,
+        'upcomming_events': upcomming_events,
+    }
+
+    return render(request, 'basics/homepage.html', context)
 
 def dashboard(request):
     events = Event.objects.filter(organizer=request.user)
@@ -140,6 +157,28 @@ def event_edit(request, event_id):
     form = EventForm(instance=event_obj)
     context = {
         'form': form,
-        # 'event': event_obj,
+        'event': event_obj,
     }
     return render(request, 'event/event_edit.html', context)
+
+def event_book(request, event_id):
+    event_obj = Event.objects.get(id=event_id)
+    form = BookEventForm()
+    if request.method == "POST":
+        form = BookEventForm(request.POST)
+        if form.is_valid:
+            # print('*'*50)
+            # print(form.data['seats'])
+            # print('*'*50)
+            # 
+            # cleaned data does not work so i used data instead, will ask supervisor for help but maybe later
+            # 
+            event_obj.seats -= int(form.data['seats'])
+            event_obj.save()
+            return redirect('event/event_list.html', event_obj.id)
+
+    context = {
+        'form': form,
+        'event': event_obj,
+    }
+    return render(request, 'event/event_book.html', context)

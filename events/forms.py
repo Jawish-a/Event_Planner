@@ -46,3 +46,7 @@ class EventForm(forms.ModelForm):
         	'start_date': forms.DateInput(attrs={'type':'date'}),
         	'end_date': forms.DateInput(attrs={'type':'date'}),
         }
+
+class BookEventForm(forms.Form):
+    seats = forms.IntegerField(required=True, max_value=10, min_value=1)
+

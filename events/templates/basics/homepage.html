@@ -6,5 +6,36 @@
 <div class="container">
     <h1>Homepage</h1>
 </div>
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>upcomming events</h1>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            {% for event in upcomming_events %}
+            <p>{{event}} <a href="{% url 'event-detail' event_id=event.id %}" class="btn btn-info"> view details</a></p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>current events</h1>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            {% for event in current_events %}
+            
+            <p>{{event}} <a href="{% url 'event-detail' event_id=event.id %}" class="btn btn-info"> view details</a></p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
 
 {% endblock content %}

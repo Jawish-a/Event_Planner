@@ -16,6 +16,8 @@
     <p>{{ event.organizer }}</p>
 </div>
 <div class="row">
+    <a href="{% url 'event-book' event_id=event.id %}" class="btn btn-primary"> Book ticket </a>
+    <hr>
     <a href="{% url 'event-edit' event_id=event.id %}" class="btn btn-warning"> edit event </a>
 </div>
 
