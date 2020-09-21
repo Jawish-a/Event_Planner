@@ -16,15 +16,15 @@ urlpatterns = [
     path('signout/', signout, name='signout'),
 
 	path('profile/', profile, name='profile'),
-	path('organizer/<int:organizer_id>', organizer, name='organizer'),
-	path('profile/edit', profile_edit, name='profile-edit'),
-	path('user/edit', user_edit, name='user-edit'),
+	path('organizer/<int:organizer_id>/', organizer, name='organizer'),
+	path('profile/edit/', profile_edit, name='profile-edit'),
+	path('user/edit/', user_edit, name='user-edit'),
     
     path('events/', event_list, name='event-list'),
     path('events/create/', event_create, name='event-create'),
     path('events/<int:event_id>/', event_detail, name='event-detail'),
     path('events/<int:event_id>/edit', event_edit, name='event-edit'),
 
-    path('events/<int:event_id>/book', event_book, name='event-book'),
+    path('events/<int:event_id>/book/', event_book, name='event-book'),
 
 ]
