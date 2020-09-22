@@ -1,41 +1,217 @@
 {% extends 'layouts/base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
+
+{% block css %}
+
+<style>
+    header {
+        position: relative;
+        background-color: black;
+        height: 100vh;
+        min-height: 25rem;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    header video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: 0;
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+    }
+
+    header .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    header .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: black;
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    @media (pointer: coarse) and (hover: none) {
+        header {
+            background: url('https://source.unsplash.com/XT5OInaElMw/1600x900') black no-repeat center center scroll;
+        }
+
+        header video {
+            display: none;
+        }
+    }
+</style>
+
+{% endblock css %}
 
 {% block content %}
 
-<div class="container">
-    <h1>Homepage</h1>
-</div>
-<hr>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>upcomming events</h1>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12">
-            {% for event in upcomming_events %}
-            <p>{{event}} <a href="{% url 'event-detail' event_id=event.id %}" class="btn btn-info"> view details</a></p>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h1>current events</h1>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12">
-            {% for event in current_events %}
-            
-            <p>{{event}} <a href="{% url 'event-detail' event_id=event.id %}" class="btn btn-info"> view details</a></p>
-            {% endfor %}
-        </div>
-    </div>
-</div>
+<header>
+    <div class="overlay"></div>
+    <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+        <!-- <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4"> -->
+    </video>
+    <div class="container h-100">
+        <div class="row justify-content-center d-flex h-100 text-center align-items-center">
+            <div class="col-xl-8 col-lg-10 text-center text-white">
+                <h1 class="page-header-title py-3"><svg class="text-warning" width="1em" height="1em"
+                        viewBox="0 0 16 16" class="bi bi-app-indicator" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M5.5 2A3.5 3.5 0 0 0 2 5.5v5A3.5 3.5 0 0 0 5.5 14h5a3.5 3.5 0 0 0 3.5-3.5V8a.5.5 0 0 1 1 0v2.5a4.5 4.5 0 0 1-4.5 4.5h-5A4.5 4.5 0 0 1 1 10.5v-5A4.5 4.5 0 0 1 5.5 1H8a.5.5 0 0 1 0 1H5.5z" />
+                        <path d="M16 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                    </svg> eVentazia | Find the best events</h1>
+                <p class="page-header-text mb-5">Search for concerts, meetups, and other amazing events in
+                    your area to find out which ones are the best!</p>
+                <form class="page-header-signup">
+                    <div class="form-row justify-content-center">
+                        <div class="col-lg-6 col-md-8">
+                            <div class="form-group mr-0 mr-lg-2"><label class="sr-only" for="inputSearch">Find local
+                                    events...</label><input
+                                    class="form-control form-control-solid bg-white rounded-pill" id="inputSearch"
+                                    type="text" placeholder="Find local events..."></div>
+                        </div>
+                        <div class="col-lg-3 col-md-4"><button class="btn btn-teal btn-block btn-warning rounded-pill"
+                                type="submit">Search</button></div>
+                    </div>
+                </form>
+            </div>
 
+        </div>
+    </div>
+</header>
+
+<section class="pt-5 bg-gray-400">
+    <div class="container mt-100 mt-60">
+        <div class="row align-items-center">
+            <div class="col-lg-5 col-md-6 mt-4 pt-2">
+                <img src="{% static 'img/undraw_festivities_tvvj.svg' %}"
+                    class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+                    alt="">
+            </div>
+            <div class="col-lg-7 col-md-6 mt-4 pt-2">
+                <div class="section-title ml-lg-5">
+                    <h4 class="title mb-4">Enjoy your time</h4>
+                    <p class="text-muted">You can discover all the event in you city, you can take a
+                        family, freinds and meet new people from all around the world.</p>
+                    <ul class="list-unstyled text-muted">
+                        <li>Digital Marketing Solutions for Tomorrow</li>
+                        <li>Our Talented &amp; Experienced Marketing Agency</li>
+                        <li>Create your own skin to match your brand</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="javascript:void(0)" class="btn btn-outline-primary rounded-pill">Read More <svg
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-arrow-right fea icon-sm">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg></a>
+                    </div>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+    </div>
+    <svg style="pointer-events: none" class="wave" width="100%" height="50px" preserveAspectRatio="none"
+        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 75">
+        <defs>
+            <style>
+                .a {
+                    fill: none;
+                }
+
+                .b {
+                    clip-path: url(#a);
+                }
+
+                .c,
+                .d {
+                    fill: #f9f9fc;
+                }
+
+                .d {
+                    opacity: 0.5;
+                    isolation: isolate;
+                }
+            </style>
+            <clipPath id="a">
+                <rect class="a" width="1920" height="75"></rect>
+            </clipPath>
+        </defs>
+        <title>wave</title>
+        <g class="b">
+            <path class="c"
+                d="M1963,327H-105V65A2647.49,2647.49,0,0,1,431,19c217.7,3.5,239.6,30.8,470,36,297.3,6.7,367.5-36.2,642-28a2511.41,2511.41,0,0,1,420,48">
+            </path>
+        </g>
+        <g class="b">
+            <path class="d"
+                d="M-127,404H1963V44c-140.1-28-343.3-46.7-566,22-75.5,23.3-118.5,45.9-162,64-48.6,20.2-404.7,128-784,0C355.2,97.7,341.6,78.3,235,50,86.6,10.6-41.8,6.9-127,10">
+            </path>
+        </g>
+        <g class="b">
+            <path class="d"
+                d="M1979,462-155,446V106C251.8,20.2,576.6,15.9,805,30c167.4,10.3,322.3,32.9,680,56,207,13.4,378,20.3,494,24">
+            </path>
+        </g>
+        <g class="b">
+            <path class="d"
+                d="M1998,484H-243V100c445.8,26.8,794.2-4.1,1035-39,141-20.4,231.1-40.1,378-45,349.6-11.6,636.7,73.8,828,150">
+            </path>
+        </g>
+    </svg>
+</section>
+
+<section class="my-5">
+    <div class="container">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Current Events</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary rounded-pill px-5">View
+                All</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+        {% for event in current_events %}
+        <div class="col-md-3">
+            <div class="card bg-gray-100 shadow" style="width: 18rem;">
+                <img src="{% static 'img/undraw_festivities_tvvj.svg' %}" class="card-img-top px-5 py-5" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">{{event}}</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+              </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+</section>
+
+<section class="bg-danger">
+    
+    <div class="row">
+
+    </div>
+</section>
 
 {% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

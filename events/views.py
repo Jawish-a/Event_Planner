@@ -59,10 +59,10 @@ def signout(request):
 #####################################################################
 
 def homepage(request):
-    categories = Category.objects.all()
+    categories = Category.objects.all()[:8]
     # events = Event.objects.all(start_date__gte = datetime.now() )
-    current_events = Event.objects.filter(start_date__lte = datetime.now() , end_date__gte = datetime.now() )
-    upcomming_events = Event.objects.filter(start_date__gte = datetime.now() )
+    current_events = Event.objects.filter(start_date__lte = datetime.now() , end_date__gte = datetime.now() )[:8]
+    upcomming_events = Event.objects.filter(start_date__gte = datetime.now() )[:8]
     context = {
         'categories':categories,
         # 'events':events,
@@ -121,18 +121,12 @@ def user_edit(request):
 
 def organizer(request, organizer_id):
     organizer_obj = User.objects.get(id=organizer_id)
-    # this solution is dumb and needs to be fixed
-    is_follower = False
-    lst = []
-    for i in organizer_obj.followers.all():
-        lst.append(i.follower)
-    if request.user in lst:
-        is_follower = True
-    # end of the stupid solution i wrote and came up with
+    is_follower = organizer_obj.followers.filter(follower=request.user).exists()
     context = {
         'organizer': organizer_obj,
         'is_follower': is_follower,
     }
+    
     return render(request, 'basics/profile.html', context)
 
 #####################################################################

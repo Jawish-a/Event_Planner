@@ -11,22 +11,19 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <!--     <script src="https://kit.fontawesome.com/5a4608d316.js" crossorigin="anonymous"></script>
- -->
+    <!-- <script src="https://kit.fontawesome.com/5a4608d316.js" crossorigin="anonymous"></script> -->
     {% block css %}
     {% endblock css %}
 
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
 
     <title>eVentazia | {% block title %}{% endblock title %}</title>
 </head>
 
 <body>
     {% include 'layouts/navbar.html' %}
-    <div class="container">
-        {% block content %}
-        {% endblock content %}
-    </div>
+    {% block content %}
+    {% endblock content %}
 
 
     <!-- Optional JavaScript -->
@@ -40,6 +37,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
+    <link rel="stylesheet" type="text/css" href="">
+    <script src="{% static 'js/app.js' %}"></script>
     {% block scripts %}
     {% endblock scripts %}
 </body>
