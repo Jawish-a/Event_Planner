@@ -83,12 +83,12 @@
                     </svg> eVentazia | Find the best events</h1>
                 <p class="page-header-text mb-5">Search for concerts, meetups, and other amazing events in
                     your area to find out which ones are the best!</p>
-                <form class="page-header-signup">
+                <form class="page-header-signup" method="GET" action="{% url 'event-list' %}">
                     <div class="form-row justify-content-center">
                         <div class="col-lg-6 col-md-8">
                             <div class="form-group mr-0 mr-lg-2"><label class="sr-only" for="inputSearch">Find local
                                     events...</label><input
-                                    class="form-control form-control-solid bg-white rounded-pill" id="inputSearch"
+                                    class="form-control form-control-solid bg-white rounded-pill" name="search" id="inputSearch"
                                     type="text" placeholder="Find local events..."></div>
                         </div>
                         <div class="col-lg-3 col-md-4"><button class="btn btn-teal btn-block btn-warning rounded-pill"
