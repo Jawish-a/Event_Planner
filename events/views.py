@@ -40,7 +40,7 @@ def signin(request):
                 # if the user has event then he is an organizer 
                 # if not he is a guest and redirect to homepage
                 # to see upcommin events
-                if request.user.events == None:
+                if request.user.events != None:
                     return redirect('dashboard')
                 return redirect('homepage')
 
@@ -80,7 +80,10 @@ def dashboard(request):
     return render(request, 'basics/dashboard.html', context)
 
 def not_found(request):
-    return render(request, 'basics/404.html')
+    context = {
+        
+    }
+    return render(request, 'basics/404.html', context)
 
 def profile(request):
     context = {
@@ -106,7 +109,7 @@ def user_edit(request):
     user_obj = request.user
     form = UserForm(instance=user_obj)
     if request.method == "POST":
-        form = UserForm(request.POST, instance=user_obj)
+        form = UserForm(request.POST, request.FILES, instance=user_obj)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(user.password)
@@ -121,13 +124,15 @@ def user_edit(request):
 
 def organizer(request, organizer_id):
     organizer_obj = User.objects.get(id=organizer_id)
+    events = Event.objects.filter(organizer=organizer_obj)
     is_follower = organizer_obj.followers.filter(follower=request.user).exists()
     context = {
         'organizer': organizer_obj,
         'is_follower': is_follower,
+        'events': events,
     }
     
-    return render(request, 'basics/profile.html', context)
+    return render(request, 'basics/organizer.html', context)
 
 #####################################################################
 #       event views                                                 #
@@ -151,7 +156,7 @@ def event_list(request):
 def event_create(request):    
     form = EventForm()
     if request.method == "POST":
-        form = EventForm(request.POST)
+        form = EventForm(request.POST, request.FILES)
         if form.is_valid():
             event_obj = form.save(commit=False)
             event_obj.organizer = request.user
@@ -172,6 +177,13 @@ def event_detail(request, event_id):
 def event_edit(request, event_id):
     event_obj = Event.objects.get(id=event_id)
     form = EventForm(instance=event_obj)
+    if request.method == "POST":
+        form = EventForm(request.POST, request.FILES, instance=event_obj)
+        if form.is_valid():
+            event_obj = form.save(commit=False)
+            event_obj.organizer = request.user
+            event_obj.save()
+            return redirect('event-list')
     context = {
         'form': form,
         'event': event_obj,
@@ -231,9 +243,9 @@ def seats_available_validate(event, seats=0):
 def follow(request, organizer_id):
     organizer = User.objects.get(id=organizer_id)
     Follower.objects.create(follower=request.user, following=organizer)
-    return redirect('homepage')
+    return redirect('organizer', organizer.id)
 
 def unfollow(request, organizer_id):
     organizer = User.objects.get(id=organizer_id)
     Follower.objects.get(follower=request.user, following=organizer).delete()
-    return redirect('homepage')
+    return redirect('organizer', organizer.id)

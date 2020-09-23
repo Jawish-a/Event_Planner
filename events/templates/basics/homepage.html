@@ -5,6 +5,12 @@
 {% block css %}
 
 <style>
+    .svg-border-rounded svg {
+        bottom: 0;
+        left: 0;
+        height: 3rem;
+        width: 100%;
+    }
     header {
         position: relative;
         background-color: black;
@@ -94,7 +100,7 @@
         </div>
     </div>
 </header>
-
+<!-- header -->
 <section class="pt-5 bg-gray-400">
     <div class="container mt-100 mt-60">
         <div class="row align-items-center">
@@ -177,39 +183,101 @@
         </g>
     </svg>
 </section>
-
-<section class="my-5">
-    <div class="container">
+<!-- Current Events -->
+<section class="mt-5">
+    <div class="container py-5">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Current Events</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary rounded-pill px-5">View
                 All</a>
         </div>
     </div>
+    <div class="container pb-5">
+        <div class="row">
+            {% for event in current_events %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card bg-gray-100 shadow">
+                    <img src="{% static 'img/undraw_festivities_tvvj.svg' %}" class="card-img-top px-5 py-5" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{event}}</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="svg-border-rounded text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none"
+            fill="currentColor">
+            <path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path>
+        </svg>
+    </div>
+</section>
+<!-- Upcomming Events -->
+<section class="mt-0 bg-gray-400">
+    <div class="container py-5">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Upcomming Events</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary rounded-pill px-5">View
+                All</a>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
-        {% for event in current_events %}
-        <div class="col-md-3">
-            <div class="card bg-gray-100 shadow" style="width: 18rem;">
-                <img src="{% static 'img/undraw_festivities_tvvj.svg' %}" class="card-img-top px-5 py-5" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">{{event}}</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
+            {% for event in upcomming_events %}
+            <div class="col-lg-4 col-md-6 pb-4">
+                <div class="card bg-gray-300 shadow">
+                    <img src="{% static 'img/undraw_festivities_tvvj.svg' %}" class="card-img-top px-5 py-5" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{event}}</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
                 </div>
-              </div>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
+    <div class="svg-border-rounded text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none"
+            fill="currentColor">
+            <path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path>
+        </svg>
+    </div>
+
+</section>
+<!-- Categories -->
+<section class="py-5 bg-white">
+    <div class="container py-5">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dicover More</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary rounded-pill px-5">View
+                All</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            {% for cat in categories %}
+            <div class="col-lg-4 col-md-6 pb-4">
+                <div class="card bg-gray-100 shadow">
+                    <img src="{% static 'img/undraw_festivities_tvvj.svg' %}" class="card-img-top px-5 py-5" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{cat}}</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
 
-<section class="bg-danger">
-    
-    <div class="row">
-
-    </div>
-</section>
 
 {% endblock content %}
 

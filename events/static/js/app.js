@@ -28,9 +28,9 @@
     });
 
     $(window).scroll(function () {
-        $('nav').toggleClass('bg-secondary', $(this).scrollTop() > 10);
+        $('nav').toggleClass('bg-secondary shadow-lg', $(this).scrollTop() > 10);
     });
-    
+
     // // Scroll to top button appear
     // $(document).on('scroll', function () {
     //     var scrollDistance = $(this).scrollTop();
