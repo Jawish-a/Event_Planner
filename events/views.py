@@ -161,6 +161,7 @@ def event_create(request):
             event_obj = form.save(commit=False)
             event_obj.organizer = request.user
             event_obj.save()
+            form.save_m2m()
             return redirect('event-list')
     context = {
         "form": form,
@@ -183,6 +184,7 @@ def event_edit(request, event_id):
             event_obj = form.save(commit=False)
             event_obj.organizer = request.user
             event_obj.save()
+            form.save_m2m()
             return redirect('event-list')
     context = {
         'form': form,

@@ -127,15 +127,16 @@
                         <div class="row">
                             <div class="col-md-4">Category</div>
                             <div class="col-md-8">
-                                {% for cat in event.categories.all %}
-                                <p>{{cat}}</p>
+                                {{event.categories.all}}
+                                {% for cat in event.category.all %}
+                                <a href="{% url 'dashboard' %}" class="btn btn-outline-info rounded-pill" >{{cat}}</a>
                                 {% endfor %}
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-4">Organizer</div>
-                            <div class="col-md-8">{{ event.organizer }}</div>
+                            <div class="col-md-8"><a href="{% url 'organizer' event.organizer.id %}">{{ event.organizer }}</a></div>
                         </div>
                         <hr>
                         <div class="row">
@@ -143,10 +144,6 @@
                             <div class="col-md-8">{{ event.location }}</div>
                         </div>
                         <hr>
-                        <div class="row">
-                            <div class="col-md-4">Location</div>
-                            <div class="col-md-8">{{ event.location }}</div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -157,7 +154,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">Options</h6>
                     </div>
                     <div class="card-body">
-                        <a href="#" class="btn btn-block rounded-pill btn-success">Edit</a>
+                        <a href="{% url 'event-edit' event.id %}" class="btn btn-block rounded-pill btn-success">Edit</a>
                         <a href="#" class="btn btn-block rounded-pill btn-danger">Delete</a>
                     </div>
                 </div>
