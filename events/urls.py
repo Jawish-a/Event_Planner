@@ -1,4 +1,7 @@
 from django.urls import path
+from django.conf.urls import (
+handler400, handler403, handler404, handler500
+)
 from .views import (
     homepage, signin, signup, signout, dashboard,
     profile, profile_edit, user_edit, not_found,
@@ -32,5 +35,5 @@ urlpatterns = [
     path('organizer/<int:organizer_id>/follow', follow, name='follow'),
     path('organizer/<int:organizer_id>/unfollow', unfollow, name='unfollow'),
 
-
 ]
+

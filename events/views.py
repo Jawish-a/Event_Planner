@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from datetime import datetime
 from django.db.models import Q
+import sweetify
 
 from .forms import SignupForm, SigninForm, EventForm, ProfileForm, UserForm, BookEventForm, TicketForm
 from .models import Event, Category, Follower
@@ -40,7 +41,7 @@ def signin(request):
                 # if the user has event then he is an organizer 
                 # if not he is a guest and redirect to homepage
                 # to see upcommin events
-                if request.user.events != None:
+                if request.user.events.count() != 0:
                     return redirect('dashboard')
                 return redirect('homepage')
 
@@ -79,11 +80,8 @@ def dashboard(request):
     }
     return render(request, 'basics/dashboard.html', context)
 
-def not_found(request):
-    context = {
-        
-    }
-    return render(request, 'basics/404.html', context)
+def not_found(request, exception):
+    return render(request, 'basics/404.html')
 
 def profile(request):
     context = {
@@ -98,8 +96,8 @@ def profile_edit(request):
         form = ProfileForm(request.POST, request.FILES, instance=profile_obj)
         if form.is_valid():
             form.save()
+            sweetify.success(request, 'You successfully updated your profile', icon='success', timer=3000)
             return redirect('profile')
-
     context = {
         "form": form,
     }
@@ -162,6 +160,7 @@ def event_create(request):
             event_obj.organizer = request.user
             event_obj.save()
             form.save_m2m()
+            sweetify.success(request, 'Event created successfuly', icon='success', timer=3000)
             return redirect('event-list')
     context = {
         "form": form,
@@ -174,12 +173,12 @@ def event_detail(request, event_id):
     if request.method == "POST":
         form = TicketForm(request.POST)
         if form.is_valid():
-
             num_of_seats_to_book = int(form.cleaned_data['tickets'])
             # validates the num_of_seats_to_book if less than 0
             if seats_available_validate(event_obj, num_of_seats_to_book):
                 # should give a message that the number of seats not available
-                return redirect('dashboard')
+                sweetify.warning(request, f'{num_of_seats_to_book} tickets is more than the allowed limit', button="OK", icon='warning', timer=10000)
+                return redirect('event-detail', event_obj.id)
 
             ticket = form.save(commit=False)
             # decrease the number of tickets in the event
@@ -190,6 +189,7 @@ def event_detail(request, event_id):
             ticket.user = request.user
             ticket.save()
             # should redirect to the ticket page to print or save as pdf
+            sweetify.success(request, f'{num_of_seats_to_book} Tickets to {event_obj.name} added', icon='success', timer=5000)
             return redirect('event-detail', event_obj.id)
 
     context = {
@@ -200,6 +200,9 @@ def event_detail(request, event_id):
 
 def event_edit(request, event_id):
     event_obj = Event.objects.get(id=event_id)
+    if not is_organizer(request, event_obj):
+        sweetify.warning(request, 'You are not allowed to do this action', icon='warning', button='OK', timer=7000)
+        return redirect('event-detail', event_obj.id)
     form = EventForm(instance=event_obj)
     if request.method == "POST":
         form = EventForm(request.POST, request.FILES, instance=event_obj)
@@ -208,6 +211,7 @@ def event_edit(request, event_id):
             event_obj.organizer = request.user
             event_obj.save()
             form.save_m2m()
+            sweetify.success(request, 'Event successfully updated', icon='success', timer=3000)
             return redirect('event-detail', event_obj.id)
     context = {
         'form': form,
@@ -222,6 +226,7 @@ def event_edit(request, event_id):
 def event_delete(request, event_id):
     event_obj = Event.objects.get(id=event_id)
     event_obj.delete()
+    sweetify.warning(request, 'Event successfully deleted', icon='warning', timer=3000)
     return redirect('event-list')
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -233,6 +238,9 @@ def seats_available_validate(event, seats=0):
         return event.seats <= 0
     return (seats - event.seats) > 0
 
+def is_organizer(request, event_obj):
+    return request.user == event_obj.organizer
+
 #####################################################################
 #       following views                                             #
 #####################################################################
@@ -240,9 +248,11 @@ def seats_available_validate(event, seats=0):
 def follow(request, organizer_id):
     organizer = User.objects.get(id=organizer_id)
     Follower.objects.create(follower=request.user, following=organizer)
+    sweetify.success(request, f'You now following {organizer.username}', icon='success', timer=3000)
     return redirect('organizer', organizer.id)
 
 def unfollow(request, organizer_id):
     organizer = User.objects.get(id=organizer_id)
     Follower.objects.get(follower=request.user, following=organizer).delete()
+    sweetify.warning(request, f'You unfollowed {organizer.username}', icon='warning', timer=3000)
     return redirect('organizer', organizer.id)

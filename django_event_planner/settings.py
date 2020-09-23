@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'events',
     # addons
     'crispy_forms',
+    'sweetify',
     
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
 
 
 MIDDLEWARE = [
