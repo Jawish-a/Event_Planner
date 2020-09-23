@@ -179,7 +179,10 @@ def event_detail(request, event_id):
                 # should give a message that the number of seats not available
                 sweetify.warning(request, f'{num_of_seats_to_book} tickets is more than the allowed limit', button="OK", icon='warning', timer=10000)
                 return redirect('event-detail', event_obj.id)
-
+            # validates of the event is old or not
+            if is_old_event(event_obj):
+                sweetify.warning(request, 'this is an old event, please wait for the next one', button="OK", icon='warning', timer=10000)
+                return redirect('event-detail', event_obj.id)
             ticket = form.save(commit=False)
             # decrease the number of tickets in the event
             event_obj.seats -= num_of_seats_to_book
@@ -195,7 +198,7 @@ def event_detail(request, event_id):
     context = {
         'form': form,
         'event': event_obj,
-        'is_old_event': event_obj.end_date <= datetime.now().date()
+        'is_old_event': is_old_event(event_obj)
     }
     return render(request, 'event/event_detail.html', context)
 
@@ -241,6 +244,10 @@ def seats_available_validate(event, seats=0):
 
 def is_organizer(request, event_obj):
     return request.user == event_obj.organizer
+
+def is_old_event(event_obj):
+    return event_obj.end_date <= datetime.now().date()
+
 
 #####################################################################
 #       following views                                             #
