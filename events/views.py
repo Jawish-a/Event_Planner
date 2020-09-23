@@ -194,7 +194,8 @@ def event_detail(request, event_id):
 
     context = {
         'form': form,
-        'event': event_obj
+        'event': event_obj,
+        'is_old_event': event_obj.end_date <= datetime.now().date()
     }
     return render(request, 'event/event_detail.html', context)
 

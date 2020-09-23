@@ -200,7 +200,16 @@
                     </div>
                 </div>
                 {% endif %}
-                {% if event.seats != 0 %}
+                {% if is_old_event  %}
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Book Ticket</h6>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-block btn-warning" type="submit">EXPIRED</button>
+                    </div>
+                </div>
+                {% elif event.seats != 0 %}
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Book Ticket</h6>
