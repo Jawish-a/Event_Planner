@@ -170,31 +170,6 @@ def event_create(request):
 
 def event_detail(request, event_id):
     event_obj = Event.objects.get(id=event_id)
-    context = {
-        'event': event_obj
-    }
-    return render(request, 'event/event_detail.html', context)
-
-def event_edit(request, event_id):
-    event_obj = Event.objects.get(id=event_id)
-    form = EventForm(instance=event_obj)
-    if request.method == "POST":
-        form = EventForm(request.POST, request.FILES, instance=event_obj)
-        if form.is_valid():
-            event_obj = form.save(commit=False)
-            event_obj.organizer = request.user
-            event_obj.save()
-            form.save_m2m()
-            return redirect('event-list')
-    context = {
-        'form': form,
-        'event': event_obj,
-    }
-    return render(request, 'event/event_edit.html', context)
-
-def event_book(request, event_id):
-    event_obj = Event.objects.get(id=event_id)
-    # if event_obj.seats == 0 
     form = TicketForm()
     if request.method == "POST":
         form = TicketForm(request.POST)
@@ -219,24 +194,44 @@ def event_book(request, event_id):
 
     context = {
         'form': form,
+        'event': event_obj
+    }
+    return render(request, 'event/event_detail.html', context)
+
+def event_edit(request, event_id):
+    event_obj = Event.objects.get(id=event_id)
+    form = EventForm(instance=event_obj)
+    if request.method == "POST":
+        form = EventForm(request.POST, request.FILES, instance=event_obj)
+        if form.is_valid():
+            event_obj = form.save(commit=False)
+            event_obj.organizer = request.user
+            event_obj.save()
+            form.save_m2m()
+            return redirect('event-detail', event_obj.id)
+    context = {
+        'form': form,
         'event': event_obj,
     }
-    return render(request, 'event/event_book.html', context)
+    return render(request, 'event/event_edit.html', context)
+
+#
+# moved vent_book() to event details page
+# 
+
+def event_delete(request, event_id):
+    event_obj = Event.objects.get(id=event_id)
+    event_obj.delete()
+    return redirect('event-list')
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 #       event validators                                            #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
 def seats_available_validate(event, seats=0):
     if seats == 0:
-        print("-"*50)
-        print(event.seats <= 0)
-        print("-"*50)
         return event.seats <= 0
-    print("X"*50)
-    print((seats - event.seats) < 0)
-    print("X"*50)
     return (seats - event.seats) > 0
-
 
 #####################################################################
 #       following views                                             #

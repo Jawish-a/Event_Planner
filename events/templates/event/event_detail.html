@@ -77,6 +77,39 @@
                         {% endif %}
                     </div>
                 </div>
+                {% if request.user == event.organizer %}
+                <div class="card border-left-warning shadow my-4">
+                    <div class="card-body">
+                        <h3> Tickets</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Event</th>
+                                    <th scope="col">Ticket ID</th>
+                                    <th scope="col">Tickets</th>
+                                    <th scope="col">User</th>
+                                    <th scope="col">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ticket in event.tickets.all %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{event.name.title}}</td>
+                                    <td>{{ticket.number}}</td>
+                                    <td>{{ticket.tickets}}</td>
+                                    <td>{{ticket.user.first_name.title}} {{ticket.user.last_name.title}}</td>
+                                    <td>{{ticket.created_at|date}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                {% endif %}
+
                 <div class="card border-left-warning shadow my-4">
                     <div class="card-body">
                         <div class="row">
@@ -116,7 +149,12 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-4">Seats</div>
+                            {% if event.seats == 0 %}
+                            <a href="" class="btn btn-outline-danger rounded-pill"
+                                style="cursor:auto; pointer-events: none;">SOLDOUT</a>
+                            {% else %}
                             <div class="col-md-8">{{ event.seats }}</div>
+                            {% endif %}
                         </div>
                         <hr>
                         <div class="row">
@@ -129,14 +167,15 @@
                             <div class="col-md-8">
                                 {{event.categories.all}}
                                 {% for cat in event.category.all %}
-                                <a href="{% url 'dashboard' %}" class="btn btn-outline-info rounded-pill" >{{cat}}</a>
+                                <a href="{% url 'dashboard' %}" class="btn btn-outline-info rounded-pill">{{cat}}</a>
                                 {% endfor %}
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-4">Organizer</div>
-                            <div class="col-md-8"><a href="{% url 'organizer' event.organizer.id %}">{{ event.organizer }}</a></div>
+                            <div class="col-md-8"><a
+                                    href="{% url 'organizer' event.organizer.id %}">{{ event.organizer }}</a></div>
                         </div>
                         <hr>
                         <div class="row">
@@ -154,11 +193,14 @@
                         <h6 class="m-0 font-weight-bold text-primary">Options</h6>
                     </div>
                     <div class="card-body">
-                        <a href="{% url 'event-edit' event.id %}" class="btn btn-block rounded-pill btn-success">Edit</a>
-                        <a href="#" class="btn btn-block rounded-pill btn-danger">Delete</a>
+                        <a href="{% url 'event-edit' event.id %}"
+                            class="btn btn-block rounded-pill btn-success">Edit</a>
+                        <a href="{% url 'event-delete' event.id %}"
+                            class="btn btn-block rounded-pill btn-danger">Delete</a>
                     </div>
                 </div>
                 {% endif %}
+                {% if event.seats != 0 %}
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Book Ticket</h6>
@@ -171,6 +213,7 @@
                         </form>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
