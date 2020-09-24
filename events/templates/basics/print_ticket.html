@@ -1,0 +1,74 @@
+<!doctype html>
+{% load static %}
+{% load qr_code %}
+
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5a4608d316.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+
+    <title>eVentazia | </title>
+</head>
+
+<body onload="window.print()">
+    <div class="col-lg-12 col-md-12 pb-4">
+        <div class="card bg-gray-100 shadow border-left-warning" style="min-height: 20rem;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="{% qr_url_from_text ticket.number %}" alt="Hello World!" class="img-fluid">
+                    </div>
+                    <div class="col-md-9 border-left-secondary px-5">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="card-title">{{ticket.event.name}}</h1>
+                            <h5 class="card-title"> <i class="fas fa-calendar pr-2   "></i>
+                                {{ticket.event.start_date}}</h5>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> {{ticket.user.first_name}} {{ticket.user.last_name}}
+                                </p>
+                                <p><strong>Email:</strong> {{ticket.user.email}}</p>
+                                <p><strong>Guests:</strong> {{ticket.tickets}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Event Details</h5>
+                                <p><strong>Country:</strong> {{ticket.event.country}}, {{ticket.event.city}}</p>
+                                <p><strong>Location:</strong> {{ticket.event.location}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" type="text/css" href="">
+    <script src="{% static 'js/app.js' %}"></script>
+
+</body>
+
+</html>
+

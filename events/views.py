@@ -266,3 +266,17 @@ def unfollow(request, organizer_id):
     Follower.objects.get(follower=request.user, following=organizer).delete()
     sweetify.warning(request, f'You unfollowed {organizer.username}', icon='warning', timer=3000)
     return redirect('organizer', organizer.id)
+
+#####################################################################
+#       ticket views                                                #
+#####################################################################
+
+def print_ticket(request, ticket_uuid):
+    ticket_obj = Ticket.objects.get(number=ticket_uuid)
+    if request.user != ticket_obj.user:
+        sweetify.warning(request, 'You are not allowed to do this action', icon='warning', button='OK', timer=7000)
+        return redirect('not_found')
+    context = {
+        'ticket': ticket_obj,
+    }
+    return render(request, 'basics/print_ticket.html', context)

@@ -6,7 +6,7 @@ from .views import (
     homepage, signin, signup, signout, dashboard,
     profile, profile_edit, user_edit, not_found,
     event_create, event_list, event_detail, event_edit,
-    event_delete, organizer, follow, unfollow
+    event_delete, organizer, follow, unfollow,print_ticket
     )
 
 urlpatterns = [
@@ -34,6 +34,8 @@ urlpatterns = [
 
     path('organizer/<int:organizer_id>/follow', follow, name='follow'),
     path('organizer/<int:organizer_id>/unfollow', unfollow, name='unfollow'),
+
+    path('ticket/<str:ticket_uuid>/', print_ticket, name='print-ticket'),
 
 ]
 
