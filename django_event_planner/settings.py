@@ -40,15 +40,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # apps
     'events',
+    'api',
     # addons
     'crispy_forms',
     'sweetify',
     'qr_code',
+    'rest_framework',
     
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

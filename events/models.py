@@ -97,4 +97,4 @@ class Follower(models.Model):
     # def __str__(self):
     #     return u'%s follows %s' % (self.follower, self.following)
     # def __str__(self):
-    #     return self.following.username
+    #     return self.follower.user.
