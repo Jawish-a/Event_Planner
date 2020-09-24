@@ -3,16 +3,9 @@
 {% load static %}
 {% block title %}dashboard{% endblock title %}
 {% block css %}
+{% load qr_code %}
+
 <style>
-    .carousel-item {
-        height: 50vh;
-        min-height: 350px;
-        background: no-repeat center center scroll;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-    }
 </style>
 {% endblock css %}
 
@@ -78,7 +71,6 @@
     </svg>
 
 </header>
-
 
 <section>
     <div class="container py-5">
@@ -171,7 +163,8 @@
     <div class="container pt-5">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">My Events</h1>
-            <a href="{% url 'event-create' %}" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary rounded-pill px-5">Create Event +</a>
+            <a href="{% url 'event-create' %}"
+                class="d-none d-sm-inline-block btn btn-sm btn-outline-primary rounded-pill px-5">Create Event +</a>
         </div>
     </div>
     <div class="container pt-3 pb-5">
@@ -182,7 +175,8 @@
             </div>
             <div class="col-md-12">
                 <h3>you dont have any events, you create one by pressing this BTN</h3>
-                <a href="{% url 'event-create' %}" class="btn btn-outline-primary rounded-pill px-5 m-3"> Create Event</a>
+                <a href="{% url 'event-create' %}" class="btn btn-outline-primary rounded-pill px-5 m-3"> Create
+                    Event</a>
             </div>
         </div>
         {% endif %}
@@ -207,5 +201,75 @@
         </div>
     </div>
 </section>
+
+<section>
+    <div class="container pt-5">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">My Tickets</h1>
+        </div>
+    </div>
+    <div class="container pt-3 pb-5">
+        {% if not tickets %}
+        <div class="row text-center">
+            <div class="col-md-12">
+                <img src="{% static 'img/undraw_Playful_cat_rchv.svg' %}" class="img-fluid" style="max-width: 30%;"
+                    alt="...">
+            </div>
+            <div class="col-md-12">
+                <h3>you dont have any tickets, you get one from here</h3>
+                <a href="{% url 'event-create' %}" class="btn btn-outline-primary rounded-pill px-5 m-3"> View
+                    Events</a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row">
+            {% for ticket in tickets %}
+            <div class="col-lg-12 col-md-12 pb-4">
+                <div class="card bg-gray-100 shadow border-left-warning" style="min-height: 20rem;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="{% qr_url_from_text ticket.number %}" alt="Hello World!" class="img-fluid">
+                            </div>
+                            <div class="col-md-9 border-left-secondary px-5">
+                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                    <h1 class="card-title">{{ticket.event.name}}</h1>
+                                    <h5 class="card-title"> <i class="fas fa-calendar pr-2   "></i>
+                                        {{ticket.event.start_date}}</h5>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Name:</strong> {{ticket.user.first_name}} {{ticket.user.last_name}}
+                                        </p>
+                                        <p><strong>Email:</strong> {{ticket.user.email}}</p>
+                                        <p><strong>Guests:</strong> {{ticket.tickets}}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Event Details</h5>
+                                        <p><strong>Country:</strong> {{ticket.event.country}}, {{ticket.event.city}}</p>
+                                        <p><strong>Location:</strong> {{ticket.event.location}}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <hr>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="#" class="btn btn-danger btn-block">Cancel</a>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="#" class="btn btn-primary btn-block">Print</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
 
 {% endblock content %}

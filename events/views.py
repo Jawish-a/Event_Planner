@@ -6,7 +6,7 @@ from django.db.models import Q
 import sweetify
 
 from .forms import SignupForm, SigninForm, EventForm, ProfileForm, UserForm, BookEventForm, TicketForm
-from .models import Event, Category, Follower
+from .models import Event, Category, Follower, Ticket
 #####################################################################
 #       auth views                                                  #
 #####################################################################
@@ -75,8 +75,10 @@ def homepage(request):
 
 def dashboard(request):
     events = Event.objects.filter(organizer=request.user)
+    tickets = Ticket.objects.filter(user=request.user)
     context = {
-        'events': events
+        'events': events,
+        'tickets':tickets,
     }
     return render(request, 'basics/dashboard.html', context)
 

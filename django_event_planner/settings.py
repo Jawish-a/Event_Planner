@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # addons
     'crispy_forms',
     'sweetify',
+    'qr_code',
     
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

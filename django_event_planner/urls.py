@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('events.urls')),
+    path('qr_code/', include('qr_code.urls', namespace="qr_code")),
 
 ]
 
