@@ -11,6 +11,7 @@
         height: 3rem;
         width: 100%;
     }
+
     header {
         position: relative;
         background-color: black;
@@ -88,8 +89,8 @@
                         <div class="col-lg-6 col-md-8">
                             <div class="form-group mr-0 mr-lg-2"><label class="sr-only" for="inputSearch">Find local
                                     events...</label><input
-                                    class="form-control form-control-solid bg-white rounded-pill" name="search" id="inputSearch"
-                                    type="text" placeholder="Find local events..."></div>
+                                    class="form-control form-control-solid bg-white rounded-pill" name="search"
+                                    id="inputSearch" type="text" placeholder="Find local events..."></div>
                         </div>
                         <div class="col-lg-3 col-md-4"><button class="btn btn-teal btn-block btn-warning rounded-pill"
                                 type="submit">Search</button></div>
@@ -195,14 +196,18 @@
     <div class="container pb-5">
         <div class="row">
             {% for event in current_events %}
-            <div class="col-lg-4 col-md-6">
-                <div class="card bg-gray-100 shadow">
-                    <img src="{% static 'img/undraw_festivities_tvvj.svg' %}" class="card-img-top px-5 py-5" alt="...">
+            <div class="col-lg-4 col-md-6 pb-4">
+                <div class="card bg-gray-100 shadow border-bottom-warning">
+                    {% if not event.image %}
+                    <img src="{% static 'img/undraw_festivities_tvvj.svg' %}" class="card-img-top">
+                    {% else %}
+                    <img src="{{ event.image.url }}" class="card-img-top">
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{event}}</h5>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of
                             the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <a href="{% url 'event-detail' event.id %}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>
@@ -229,13 +234,17 @@
         <div class="row">
             {% for event in upcomming_events %}
             <div class="col-lg-4 col-md-6 pb-4">
-                <div class="card bg-gray-300 shadow">
-                    <img src="{% static 'img/undraw_festivities_tvvj.svg' %}" class="card-img-top px-5 py-5" alt="...">
+                <div class="card bg-gray-100 shadow border-bottom-warning">
+                    {% if not event.image %}
+                    <img src="{% static 'img/undraw_festivities_tvvj.svg' %}" class="card-img-top">
+                    {% else %}
+                    <img src="{{ event.image.url }}" class="card-img-top">
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{event}}</h5>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of
                             the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <a href="{% url 'event-detail' event.id %}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>

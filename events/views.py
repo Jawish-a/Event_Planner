@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db.models import Q
 import sweetify
 
@@ -273,6 +273,7 @@ def unfollow(request, organizer_id):
 
 def print_ticket(request, ticket_uuid):
     ticket_obj = Ticket.objects.get(number=ticket_uuid)
+    # validate the ownership
     if request.user != ticket_obj.user:
         sweetify.warning(request, 'You are not allowed to do this action', icon='warning', button='OK', timer=7000)
         return redirect('not_found')
@@ -280,3 +281,23 @@ def print_ticket(request, ticket_uuid):
         'ticket': ticket_obj,
     }
     return render(request, 'basics/print_ticket.html', context)
+
+def cancel_ticket(request, ticket_uuid):
+    ticket_obj = Ticket.objects.get(number=ticket_uuid)
+    # validate the ownership
+    if request.user != ticket_obj.user:
+        sweetify.warning(request, 'You are not allowed to do this action', icon='warning', button='OK', timer=7000)
+        return redirect('dashboard')
+    # validate the date and time if 3 days before the start if the event
+    if datetime.now().date() >= (ticket_obj.event.start_date - timedelta(days=3) ):
+        sweetify.warning(request, 'You are not allowed to do this action', icon='warning', button='OK', timer=7000)
+        return redirect('dashboard')
+    number_of_seats = ticket_obj.tickets
+    event = ticket_obj.event
+    ticket_obj.delete()
+    event.seats += number_of_seats
+    event.save()
+    sweetify.warning(request, 'Ticket has been canceled', icon='warning', button='OK', timer=7000)
+    return redirect('dashboard')
+
+    

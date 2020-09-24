@@ -2,9 +2,9 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block title %}dashboard{% endblock title %}
-{% block css %}
 {% load qr_code %}
 
+{% block css %}
 <style>
 </style>
 {% endblock css %}
@@ -254,7 +254,7 @@
                                         <hr>
                                     </div>
                                     <div class="col-md-3">
-                                        <a href="#" class="btn btn-danger btn-block">Cancel</a>
+                                        <a href="{% url 'cancel-ticket' ticket.number %}" class="btn btn-danger btn-block">Cancel</a>
                                     </div>
                                     <div class="col-md-3">
                                         <a href="{% url 'print-ticket' ticket.number %}" class="btn btn-primary btn-block">Print</a>

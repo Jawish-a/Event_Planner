@@ -85,16 +85,6 @@
                         </p>
                     </div>
                 </div>
-                <div class="card shadow mt-4">
-                    <div class="card-header">
-                        My Tickets
-                    </div>
-                    <div class="card-body">
-                        {% for ticket in user.tickets.all %}
-                        <p>{{ticket.event}} | {{ticket.tickets}}</p>
-                        {% endfor %}
-                    </div>
-                </div>
             </div>
             <div class="col-md-8">
                 <div class="card shadow py-2">
